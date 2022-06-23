@@ -7,6 +7,8 @@ from .serializers import *
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.response import Response
 
 
 @csrf_exempt
@@ -24,19 +26,18 @@ def stdList(request):
             return JsonResponse(serializer.data, status= 201)
         return JsonResponse(serializer.errors, status =400)
 
+
 @csrf_exempt
 def login(request):
     try:
         data = JSONParser().parse(request)
-        print(data)
         email = data['email']
         password = data['password']
     except:
         return HttpResponse(status = 404)
-    if request.method == 'GET':
+    if request.method == 'POST':
         try:
             loginStd = student.objects.filter(email = email, password = password)
-            print(loginStd)
             serializer = StudentReg(loginStd[0])
             return JsonResponse(serializer.data)
         except:
