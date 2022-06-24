@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 
 class student(models.Model):
     name = models.CharField(max_length=50)
-    email = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(max_length=50, unique=True)
     password = models.CharField(max_length=8)
     address = models.CharField(max_length=100)
     state = models.CharField(max_length=50)

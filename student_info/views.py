@@ -9,21 +9,22 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.response import Response
+from rest_framework import status
+
 
 
 @csrf_exempt
-def stdList(request):
+def stdRegistration(request):
     if request.method == "GET":
         allStd = student.objects.all()
         serializer = StudentReg(allStd.order_by('-id'), many=True)
-        print(serializer)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
         data = JSONParser().parse(request)
         serializer = StudentReg(data = data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status= 201)
+            return HttpResponse("Registration success", status= 201)
         return JsonResponse(serializer.errors, status =400)
 
 
@@ -39,7 +40,7 @@ def login(request):
         try:
             loginStd = student.objects.filter(email = email, password = password)
             serializer = StudentReg(loginStd[0])
-            return JsonResponse(serializer.data)
+            return HttpResponse("Login success", status= 200)
         except:
             return HttpResponse("Unauthorized user")
 
@@ -69,3 +70,4 @@ def stdDel(request, id):
     if request.method == 'DELETE':
         data.delete()
         return HttpResponse(status = 200)
+    

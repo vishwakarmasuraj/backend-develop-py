@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     #  path('admin/', admin.site.urls),
-    path("list", views.stdList),
+    path("add/", views.stdRegistration),
     path("login/", views.login),
     path("update/<int:id>", views.stdUpdate),
     path("del/<int:id>", views.stdDel),
